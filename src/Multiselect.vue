@@ -100,7 +100,7 @@
       <!-- Placeholder -->
       <!-- <template >
         <slot name="placeholder"> -->
-          <div class="multiselect-placeholder" v-show="placeholder && !hasSelected && !search">
+          <div class="multiselect-placeholder" v-show="placeholder">
             {{ placeholder }}
           </div>
         <!-- </slot>
