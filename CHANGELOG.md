@@ -1,3 +1,33 @@
+## v1.4.0
+
+> `2021-04-06`
+
+### 🎉 Feature
+  - **BREAKING**: array `options` are no longer treated as objects, but both option value and label will equal to array item value. Eg. `option: ['v1','v2']` used to be equal to `{0: 'v1', 1: 'v2'}`, now they're equal to `{v1: 'v1', v2: 'v2'}`.
+  - Optimized variable names for lower package size.
+
+## v1.3.7
+
+> `2021-04-06`
+
+### 🐞 Bug Fixes
+  - Async options fix for [#39](https://github.com/vueform/multiselect/issues/39). Refreshing non-async options now will only be reflected after a tick.
+
+### 🎉 Feature
+  - Added caret, remove and spinner slots.
+
+## v1.3.6
+
+> `2021-03-30`
+
+### 🐞 Bug Fixes
+  - Remove extra space when creating a tag with space ([#46](https://github.com/vueform/multiselect/issues/46)).
+  - Fixed issues around refreshing async options ([#45](https://github.com/vueform/multiselect/issues/45)).
+  - Android keyboard fix ([#49](https://github.com/vueform/multiselect/issues/49) & [#50](https://github.com/vueform/multiselect/issues/50)).
+
+### 🎉 Feature
+  - Added installation guide for Nuxt.js.
+
 ## v1.3.5
 
 > `2021-03-20`
@@ -13,7 +43,7 @@
   - Recursion error when accessing `value` inside computed `options` ([#39](https://github.com/vueform/multiselect/issues/39)).
   - Set initial value when options are loaded later ([#40](https://github.com/vueform/multiselect/issues/40)).
 
-  ## v1.3.3
+## v1.3.3
 
 > `2021-03-12`
 

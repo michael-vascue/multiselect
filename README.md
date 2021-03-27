@@ -76,7 +76,7 @@ Check out our <a href="https://jsfiddle.net/q6Lnpr7a/" target="_blank">demo</a>.
 npm install @vueform/multiselect
 ```
 
-## Usage with Vue 3
+## Using with Vue 3
 
 ``` vue
 <template>
@@ -111,9 +111,48 @@ npm install @vueform/multiselect
 <style src="@vueform/multiselect/themes/default.css"></style>
 ```
 
-## Usage with Vue 2
+## Using with Vue 2
 
-When using with Vue 2 make sure to install [@vue/composition-api](https://github.com/vuejs/composition-api#npm) first and change the imported module to:
+When using Vue 2 install [@vue/composition-api](https://github.com/vuejs/composition-api#npm) via npm/yarn first:
+
+``` bash
+npm i @vue/composition-api --save-dev
+```
+
+Then install the plugin for Vue:
+
+``` js
+import Vue from 'vue'
+import VueCompositionAPI from '@vue/composition-api'
+
+Vue.use(VueCompositionAPI)
+```
+
+After that make sure to change the imported Multiselect module to:
+
+``` js
+import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
+```
+
+## Using with Nuxt.js
+
+First you need install [@nuxtjs/composition-api](https://composition-api.nuxtjs.org/getting-started/setup):
+
+``` bash
+npm i @nuxtjs/composition-api --save-dev
+```
+
+Then you need to enable it as a module in `nuxt.config.js`:
+
+``` js
+{
+  buildModules: [
+    '@nuxtjs/composition-api'
+  ]
+}
+```
+
+After that make sure to change the imported module to Vue 2 version of Multiselect, as Nuxt.js still depends on that:
 
 ``` js
 import Multiselect from '@vueform/multiselect/dist/multiselect.vue2.js'
@@ -219,6 +258,9 @@ mounted() {
 | **option** | `option, search` | Renders an option in options list. |
 | **singlelabel** | `value` | Rendered when using `single` mode and an option is selected. By default it renders the `:label` if the selected option. |
 | **tag** | `option, handleTagRemove, disabled` | Renders a tag when using `tags` mode. When `disabled` the remove icon should not be displayed. The `handleTagRemove` prop should be used to trigger the removal of the tag. |
+| **caret** | | Renders a small triangle on the right side of the multiselect. |
+| **clear** | | Renders a remove icon if the multiselect has any value. |
+| **spinner** | | Renders a loader icon when async options are being fetched. |
 
 > Note: we don't use camelCase because they are [normalized back to lowercase](https://github.com/vuejs/vue/issues/9449#issuecomment-461170017) when written in DOM.
 

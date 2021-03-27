@@ -27,19 +27,17 @@
       @keydown.prevent.down="forwardPointer"
     >
       <!-- Single label -->
-      <template
-        v-if="mode == 'single' && hasSelected && !search && internalValue"
-      >
-        <slot name="singlelabel" :value="internalValue">
+      <template v-if="mode == 'single' && hasSelected && !search && iv">
+        <slot name="singlelabel" :value="iv">
           <div class="multiselect-single-label">
-            {{ internalValue[label] }}
+            {{ iv[label] }}
           </div>
         </slot>
       </template>
 
       <!-- Multiple label -->
       <template v-if="mode == 'multiple' && hasSelected && !search">
-        <slot name="multiplelabel" :values="internalValue">
+        <slot name="multiplelabel" :values="iv">
           <div class="multiselect-multiple-label">
             {{ multipleLabelText }}
           </div>
@@ -50,7 +48,8 @@
       <template v-if="mode !== 'tags' && searchable && !disabled">
         <div class="multiselect-search">
           <input
-            v-model="search"
+            :modelValue="search"
+            :value="search"
             @focus.stop="openDropdown"
             @blur.stop="closeDropdown"
             @keyup.stop.esc="handleEsc"
@@ -58,6 +57,7 @@
             @keydown.delete="handleSearchBackspace"
             @keydown.stop.up="backwardPointer"
             @keydown.stop.down="forwardPointer"
+            @input="handleSearchInput"
             ref="input"
           />
         </div>
@@ -66,7 +66,7 @@
       <!-- Tags (with search) -->
       <template v-if="mode == 'tags'">
         <div class="multiselect-tags">
-          <span v-for="(option, i, key) in internalValue" :key="key">
+          <span v-for="(option, i, key) in iv" :key="key">
             <slot
               name="tag"
               :option="option"
@@ -90,7 +90,8 @@
             :style="{ width: tagsSearchWidth }"
           >
             <input
-              v-model="search"
+              :modelValue="search"
+              :value="search"
               @focus.stop="openDropdown"
               @blur.stop="closeDropdown"
               @keyup.stop.esc="handleEsc"
@@ -99,6 +100,7 @@
               @keydown.delete="handleSearchBackspace"
               @keydown.stop.up="backwardPointer"
               @keydown.stop.down="forwardPointer"
+              @input="handleSearchInput"
               :style="{ width: tagsSearchWidth }"
               ref="input"
             />
@@ -115,19 +117,28 @@
         </slot>
       </template>
 
-      <div class="multiselect-placeholder-label" v-show="Object.keys(internalValue).length > 0">
+      <!-- <div
+        class="multiselect-placeholder-label"
+        v-show="Object.keys(iv).length > 0"
+      >
         {{ placeholder }}
-      </div>
+      </div> -->
+      
+      <slot v-if="caret && !busy" name="caret">
+        <span class="multiselect-caret" @click="isOpen ? closeDropdown() : openDropdown()"></span>
+      </slot>
 
       <transition name="multiselect-loading">
-        <div v-show="busy" class="multiselect-spinner" />
+        <span v-if="busy">
+          <slot name="spinner">
+            <span class="multiselect-spinner"></span>
+          </slot>
+        </span>
       </transition>
 
-      <a
-        v-if="mode !== 'single' && hasSelected && !disabled"
-        class="multiselect-clear"
-        @click.prevent="clear"
-      ></a>
+      <slot v-if="hasSelected && !disabled" name="clear" :clear="clear">
+        <a class="multiselect-clear" @click.prevent="clear"></a>
+      </slot>
     </div>
 
     <!-- Options -->
@@ -144,7 +155,7 @@
         <slot name="beforelist"></slot>
 
         <span
-          v-for="(option, i, key) in filteredOptions"
+          v-for="(option, i, key) in fo"
           :tabindex="-1"
           class="multiselect-option"
           :class="{
@@ -223,6 +234,7 @@ export default {
     options: {
       type: [Array, Object, Function],
       required: false,
+      default: () => [],
     },
     id: {
       type: [String, Number],
@@ -385,11 +397,11 @@ export default {
     const pointer = usePointer(props, context);
 
     const data = useData(props, context, {
-      internalValue: value.internalValue,
+      iv: value.iv,
     });
 
     const search = useSearch(props, context, {
-      internalValue: value.internalValue,
+      iv: value.iv,
     });
 
     const dropdown = useDropdown(props, context, {
@@ -401,9 +413,8 @@ export default {
     });
 
     const options = useOptions(props, context, {
-      externalValue: value.externalValue,
-      internalValue: value.internalValue,
-      currentValue: value.currentValue,
+      ev: value.ev,
+      iv: value.iv,
       search: search.search,
       blurSearch: search.blurSearch,
       clearSearch: search.clearSearch,
@@ -413,14 +424,14 @@ export default {
     });
 
     const pointerAction = usePointerAction(props, context, {
-      filteredOptions: options.filteredOptions,
+      fo: options.fo,
       handleOptionClick: options.handleOptionClick,
       search: search.search,
       pointer: pointer.pointer,
     });
 
     const keyboard = useKeyboard(props, context, {
-      internalValue: value.internalValue,
+      iv: value.iv,
       update: data.update,
       closeDropdown: dropdown.closeDropdown,
       clearPointer: pointerAction.clearPointer,
