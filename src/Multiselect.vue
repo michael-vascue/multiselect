@@ -98,7 +98,7 @@
       </template>
 
       <!-- Placeholder -->
-      <template v-if="placeholder && !hasSelected && !search">
+      <template v-show="placeholder && !hasSelected && !search">
         <slot name="placeholder">
           <div class="multiselect-placeholder">
             {{ placeholder }}

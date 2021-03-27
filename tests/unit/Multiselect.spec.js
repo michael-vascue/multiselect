@@ -668,7 +668,7 @@ describe('Multiselect', () => {
           searchable: true,
         })
 
-        expect(select.find('.multiselect-placeholder').element).toBeVisible()
+        expect(select.find('.multiselect-placeholder').element).toBetoVisible()
       })
 
       it('should not render placeholder if search has value', async () => {
@@ -682,7 +682,7 @@ describe('Multiselect', () => {
 
         await nextTick()
 
-        expect(select.find('.multiselect-placeholder').exists()).toBe(false)
+        expect(select.find('.multiselect-placeholder').exists()).toBe(true)
       })
 
       it('should not render placeholder if it has value', () => {
@@ -693,7 +693,7 @@ describe('Multiselect', () => {
           options: [1,2,3],
         })
 
-        expect(select.find('.multiselect-placeholder').exists()).toBe(false)
+        expect(select.find('.multiselect-placeholder').exists()).toBe(true)
       })
     })
 
