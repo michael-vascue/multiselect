@@ -98,13 +98,13 @@
       </template>
 
       <!-- Placeholder -->
-      <template v-show="placeholder && !hasSelected && !search">
-        <slot name="placeholder">
-          <div class="multiselect-placeholder">
+      <!-- <template >
+        <slot name="placeholder"> -->
+          <div class="multiselect-placeholder" v-show="placeholder && !hasSelected && !search">
             {{ placeholder }}
           </div>
-        </slot>
-      </template>
+        <!-- </slot>
+      </template> -->
 
       <transition name="multiselect-loading">
         <div v-show="busy" class="multiselect-spinner" />
