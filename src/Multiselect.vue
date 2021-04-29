@@ -117,12 +117,12 @@
         </slot>
       </template>
 
-      <!-- <div
+      <div
         class="multiselect-placeholder-label"
         v-show="Object.keys(iv).length > 0"
       >
         {{ placeholder }}
-      </div> -->
+      </div>
       
       <slot v-if="caret && !busy" name="caret">
         <span class="multiselect-caret" @click="isOpen ? closeDropdown() : openDropdown()"></span>
